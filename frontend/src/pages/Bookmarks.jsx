@@ -57,7 +57,7 @@ function Bookmarks({ token }) {
 
   const fetchBookmarks = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/bookmarks', {
+      const res = await axios.get('/api/bookmarks', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBookmarks(Array.isArray(res.data) ? res.data : []);
@@ -85,7 +85,7 @@ function Bookmarks({ token }) {
     }
 
     try {
-      const res = await axios.post('http://localhost:5000/api/bookmarks', { url }, {
+      const res = await axios.post('/api/bookmarks', { url }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBookmarks([res.data, ...bookmarks]);
@@ -104,7 +104,7 @@ function Bookmarks({ token }) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/bookmarks/${id}`, {
+      await axios.delete(`/api/bookmarks/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBookmarks(bookmarks.filter(b => b._id !== id));
