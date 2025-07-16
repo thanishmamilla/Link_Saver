@@ -60,15 +60,30 @@ function Bookmarks({ token }) {
       const res = await axios.get('http://localhost:5000/api/bookmarks', {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setBookmarks(res.data);
+      setBookmarks(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
-      setError('Failed to load bookmarks');
+      if (err.response && err.response.status === 401) {
+        setError('Session expired or unauthorized. Please log in again.');
+        localStorage.removeItem('token');
+        window.location.reload();
+      } else {
+        setError('Failed to load bookmarks');
+      }
+      setBookmarks([]);
     }
   };
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    setError(''); setLoading(true);
+    setError('');
+    setLoading(true);
+
+    if (!token) {
+      setError('You must be logged in to add a bookmark.');
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await axios.post('http://localhost:5000/api/bookmarks', { url }, {
         headers: { Authorization: `Bearer ${token}` }
@@ -76,7 +91,13 @@ function Bookmarks({ token }) {
       setBookmarks([res.data, ...bookmarks]);
       setUrl('');
     } catch (err) {
-      setError('Failed to add bookmark');
+      if (err.response && err.response.status === 401) {
+        setError('Session expired or unauthorized. Please log in again.');
+        localStorage.removeItem('token');
+        window.location.reload();
+      } else {
+        setError('Failed to add bookmark');
+      }
     }
     setLoading(false);
   };
@@ -107,7 +128,7 @@ function Bookmarks({ token }) {
           </Box>
           {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
           <List>
-            {bookmarks.map(b => (
+            {Array.isArray(bookmarks) && bookmarks.map(b => (
               <ListItem key={b._id} alignItems="flex-start" sx={{ mb: 2, borderBottom: '1px solid #333' }}>
                 <ListItemAvatar>
                   <Avatar src={b.favicon || undefined} alt="favicon">
