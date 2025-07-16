@@ -29,6 +29,12 @@ A full-stack web app to save, organize, and auto-summarize your favorite links. 
 
 ---
 
+## 🎥 Demo
+
+![App Demo](./screenshots/demo.gif)
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Frontend:** React, Vite, Material-UI, Axios, React Router
@@ -80,15 +86,6 @@ npm run dev
 - **View Bookmarks:** See all your saved links with summaries. Delete any you don’t want.
 - **Summary API:** Uses Jina AI’s free endpoint. If the API fails, a fallback message is shown.
 - **Summary Display:** Only the most relevant, readable part of the summary is shown for each link.
-
----
-
-## 📦 What’s Next?
-
-- Add tags and filtering
-- Drag-and-drop reordering
-- More tests and coverage
-- Deploy to Vercel/Netlify (optional)
 
 ---
 
